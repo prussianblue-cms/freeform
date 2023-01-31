@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.preview
+    - field.field.paragraph.content_embed_freeform.field_embedded_freeform
+    - paragraphs.paragraphs_type.content_embed_freeform
+id: paragraph.content_embed_freeform.preview
+targetEntityType: paragraph
+bundle: content_embed_freeform
+mode: preview
+content:
+  field_embedded_freeform:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  search_api_excerpt: true

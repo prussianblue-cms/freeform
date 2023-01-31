@@ -4,7 +4,6 @@ dependencies:
   config:
     - field.storage.node.field_freeform_contents
     - node.type.freeform
-    - paragraphs.paragraphs_type.freeform_content_canvas
     - paragraphs.paragraphs_type.freeform_formatted_text
     - paragraphs.paragraphs_type.freeform_image
     - paragraphs.paragraphs_type.freeform_plain_text
@@ -30,7 +29,6 @@ settings:
       freeform_image: freeform_image
       freeform_plain_text: freeform_plain_text
       freeform_url: freeform_url
-      freeform_content_canvas: freeform_content_canvas
     target_bundles_drag_drop:
       freeform_content_canvas:
         enabled: true
