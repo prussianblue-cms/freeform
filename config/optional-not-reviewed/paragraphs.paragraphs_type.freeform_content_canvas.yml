@@ -1,9 +1,0 @@
-langcode: en
-status: true
-dependencies: {  }
-id: freeform_content_canvas
-label: 'Freeform content canvas'
-icon_uuid: null
-icon_default: null
-description: 'Embed a section with customizable layout and content.'
-behavior_plugins: {  }
