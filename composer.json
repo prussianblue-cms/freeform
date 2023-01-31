@@ -1,0 +1,12 @@
+{
+  "name": "prussianblue-cms/freeform",
+  "description": "Freeform helps developers and content editor collaborate in creating custom components for Drupal sites.",
+  "type": "drupal-module",
+  "license": "GPL-2.0-or-later",
+  "authors": [
+      {
+          "name": "Matrushka Dev Team",
+          "role": ""
+      }
+  ]
+}
