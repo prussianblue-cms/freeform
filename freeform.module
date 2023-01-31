@@ -1,0 +1,186 @@
+<?php
+
+/**
+ * @file
+ * Contains freeform.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Url;
+use Drupal\Core\Link;
+
+/**
+ * Implements hook_help().
+ */
+function freeform_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the freeform module.
+    case 'help.page.freeform':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Freeform generic module implementation') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function freeform_theme($existing, $type, $theme, $path) {
+  return array(
+    'freeform' => array(
+      'variables' => array('code' => NULL, 'load_node' => TRUE),
+      'template' => 'freeform',
+    ),
+  );
+}
+
+/**
+ * Implements hook_theme_suggestions_freeform_alter().
+ */
+function freeform_theme_suggestions_freeform_alter(&$suggestions, $variables) {
+  if(!empty($variables['code'])) {
+    $suggestions[] = 'freeform__' . $variables['code'];
+  }
+}
+
+/**
+ * Implements hook_preprocess()
+ * Add variables to blocks using the freeform template
+ */
+function freeform_preprocess_freeform(&$variables) {
+  $code = trim($variables['code']);
+  $load = $variables['load_node'];
+  $variables['freeform'] = ['code' => $code];
+
+  if(empty($code)) {
+    \Drupal::messenger()->addError(t('The code of a freeform block must not be empty'));
+    $variables['freeform'] = null;
+    return;
+  }
+
+  if(!$load) {
+    $variables['freeform'] = null;
+    return;
+  }
+
+  $node = freeform_get_freeform_node_by_code($code);
+  $nid = freeform_get_freeform_nid_by_code($code);
+
+  if(empty($node)) {
+    // \Drupal::messenger()->addError(t('A Freeform node with the following code was not found: @code', array('@code' => $code)));
+    $variables['freeform']['node'] = null;
+    $variables['freeform']['nid'] = null;
+    return;
+  }
+
+  // Getting paragraphs
+  $paragraphs = $node->field_freeform_contents;
+  foreach($paragraphs as $i => $paragraphItem) {
+    $paragraphEntity = $paragraphItem->entity;
+    $paragraphCode = $paragraphEntity->field_freeform_code->value;
+
+    $variables['freeform']['contents'][$paragraphCode] = [
+      'entity' => $paragraphEntity
+    ];
+  }
+
+  $variables['freeform']['node'] = $node;
+  $variables['freeform']['nid'] = $nid;
+}
+
+/**
+ * Implements hook_theme_suggestions_node_alter().
+ */
+function freeform_theme_suggestions_node_alter(&$suggestions, $variables) {
+  $node = $variables['elements']['#node'];
+  $node_bundle = $node->bundle();
+  $view_mode = $variables['elements']['#view_mode'];
+
+  if ($node_bundle == 'freeform' && $view_mode == 'full') {
+    $code = $node->field_freeform_code->getString();
+    if(!empty($code)) {
+      $suggestions[] = 'node__freeform__' . $code;
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_node__NODE_TYPE().
+ * Adding extra variables to Freeform node type when viewmode is full
+ */
+function freeform_preprocess_node__freeform(&$variables) {
+  $view_mode = $variables['view_mode'];
+  if ($view_mode == 'full') {
+    $node = $variables['node'];
+    $paragraphs = $node->field_freeform_contents;
+    $variables['freeform'] = [];
+
+    foreach($paragraphs as $i => $paragraphItem) {
+      $paragraphEntity = $paragraphItem->entity;
+      $paragraphCode = $paragraphEntity->field_freeform_code->value;
+      $variables['freeform']['contents'][$paragraphCode] = [
+        'content' => $variables['content']['field_freeform_contents'][$i],
+        'entity' => $paragraphEntity
+      ];
+    }
+
+    $variables['freeform']['node'] = $node;
+    $variables['freeform']['nid'] = $node->nid;
+    $variables['freeform']['code'] = $node->get('field_freeform_code')->value;
+  }
+}
+
+
+/**
+  * Gets the Freeform node ID that matches the given $code
+  */
+function freeform_get_freeform_nid_by_code($code) {
+  $bundle = 'freeform';
+  $query = \Drupal::entityQuery('node');
+  $query->condition('status', 1);
+  $query->condition('type', $bundle);
+  $query->condition('field_freeform_code', $code);
+  $entity_ids = $query->execute();
+  $nid = reset($entity_ids);
+
+  return $nid;
+}
+
+/**
+  * Loads the Freeform node that matches the given $code,
+  * looks for a translation for the current language and
+  * gets the translated entities for all of its paragraphs
+  */
+function freeform_get_freeform_node_by_code($code) {
+  $nid = freeform_get_freeform_nid_by_code($code);
+  if(empty($nid)) {
+    return;
+  }
+
+  $node = \Drupal\node\Entity\Node::load($nid);
+
+  $current_language = \Drupal::languageManager()->getCurrentLanguage()->getId();
+
+  if($node->hasTranslation($current_language)) {
+    $translation = $node->getTranslation($current_language);
+    $node = $translation;
+  }
+
+  $current_language = \Drupal::languageManager()->getCurrentLanguage()->getId();
+
+  $paragraphs = &$node->field_freeform_contents;
+
+  foreach($paragraphs as $i => $paragraph_item) {
+    $para = $paragraph_item->entity;
+
+    // Get the translated Paragraph entity.
+    if($para->hasTranslation($current_language)) {
+       $paragraphs[$i] = $para->getTranslation($current_language);
+    }
+  }
+
+  return $node;
+}

@@ -1,0 +1,24 @@
+langcode: en
+status: false
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.freeform.field_freeform_code
+    - field.field.node.freeform.field_freeform_contents
+    - node.type.freeform
+  module:
+    - user
+id: node.freeform.teaser
+targetEntityType: node
+bundle: freeform
+mode: teaser
+content:
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_freeform_code: true
+  field_freeform_contents: true
+  langcode: true

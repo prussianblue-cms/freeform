@@ -1,0 +1,8 @@
+name: M3 Sample Custom Blocks
+description: M3 Sample M3 custom block enabler module.
+type: module
+core: 8.x
+core_version_requirement: ^8 || ^9
+package: 'M3 Sample M3'
+dependencies:
+  - drupal:webform

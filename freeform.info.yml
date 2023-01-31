@@ -1,0 +1,9 @@
+name: 'Freeform'
+type: module
+description: 'Freeform helps developers and content editor collaborate in creating custom components for pages.'
+core: 9.x
+core_version_requirement: ^9 || ^10
+
+dependencies:
+  - paragraphs
+  - twig_tweak

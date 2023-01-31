@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+id: freeform_plain_text
+label: 'Freeform Plain Text'
+icon_uuid: null
+description: 'Unformatted Text string that can be embedded into a freeform template.'
+behavior_plugins: {  }

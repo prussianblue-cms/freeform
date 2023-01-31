@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+id: freeform_url
+label: 'Freeform URL'
+icon_uuid: null
+description: 'URL that can be embedded into a freeform template.'
+behavior_plugins: {  }

@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.freeform_plain_text.field_freeform_code
+    - field.field.paragraph.freeform_plain_text.field_freeform_plain_text
+    - paragraphs.paragraphs_type.freeform_plain_text
+id: paragraph.freeform_plain_text.default
+targetEntityType: paragraph
+bundle: freeform_plain_text
+mode: default
+content:
+  field_freeform_plain_text:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden:
+  field_freeform_code: true

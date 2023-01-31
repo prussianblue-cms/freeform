@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains m3_sample_custom_blocks.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function m3_sample_custom_blocks_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the m3_sample_custom_blocks module.
+    case 'help.page.m3_sample_custom_blocks':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('M3 Sample M3 custom block enabler module') . '</p>';
+      return $output;
+
+    default:
+  }
+}

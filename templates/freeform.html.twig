@@ -1,0 +1,24 @@
+{#
+/**
+ * @file
+ * Default freeform block template.
+ *
+ * Available variables:
+ * - freeform
+ * -    code: Freeform code that will be used to fetch the node
+ * -    nid: Node ID fetched from the code
+ * -    node: Node entity fetched from the code
+ */
+#}
+
+{% if freeform %}
+    {% if freeform.node %}
+        <div class="freeform-block__wrapper freeform-block__wrapper--{{ freeform.code }}">
+            {{ drupal_entity('node', freeform.nid, 'full') }}
+        </div>
+    {% else %}
+        <span><strong>Content error:</strong> A freeform node with the code <code>{{ code }}</code> was not found.</span>
+    {% endif %}
+{% else %}
+    <span><strong>Declaration error:</strong> No <code>code</code> was provided to load in this block.</span>
+{% endif %}

@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_freeform_url
+    - paragraphs.paragraphs_type.freeform_url
+  module:
+    - link
+id: paragraph.freeform_url.field_freeform_url
+field_name: field_freeform_url
+entity_type: paragraph
+bundle: freeform_url
+label: 'Freeform link'
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 17
+  title: 1
+field_type: link

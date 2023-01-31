@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_freeform_image_alt
+    - paragraphs.paragraphs_type.freeform_image
+id: paragraph.freeform_image.field_freeform_image_alt
+field_name: field_freeform_image_alt
+entity_type: paragraph
+bundle: freeform_image
+label: 'Image Alt'
+description: 'Write or translate the alt value for the image. Won''t be displayed. Leave it blank for decorative images.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

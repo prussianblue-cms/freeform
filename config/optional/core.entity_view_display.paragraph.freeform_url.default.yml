@@ -1,0 +1,29 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.freeform_url.field_freeform_code
+    - field.field.paragraph.freeform_url.field_freeform_url
+    - paragraphs.paragraphs_type.freeform_url
+  module:
+    - link
+id: paragraph.freeform_url.default
+targetEntityType: paragraph
+bundle: freeform_url
+mode: default
+content:
+  field_freeform_url:
+    weight: 0
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+hidden:
+  field_freeform_code: true
+  search_api_excerpt: true

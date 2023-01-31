@@ -1,0 +1,41 @@
+{#
+/**
+ * @file
+ * Theme override for freeform node.
+ *
+ * Add here custom HTML to display using the contents defined in the node with the given code.
+ *
+ * Template name should be: node--freeform--CODE.html.twig
+ *
+ * CODE should not use spaces or underscores. Either on its definition or in the template name.
+ *
+ * Only codes for Freeform contents (CONTENT-CODES) can use slashes.
+ *
+ * Available variables:
+ * - freeform: the freeform data fetched
+ *  - contents: the freeform data fetched
+ *    - CONTENT-CODE: Freeform content code used in the node, can use underscores
+ *      - entity: Freeform content paragraph entity
+ *      - content: Freeform content paragraph entity contents (as provided by drupal display configuration)
+ *  - code: Freeform code
+ *  - node: Freeform node
+ *  - nid: Freeform nid
+ */
+#}
+
+{# Include this import to use freeformMacros on your template #}
+{% import '@freeform/macros.twig' as freeformMacros %}
+
+<h1>This is a sample markup</h1>
+
+<p>You can use any custom markup here!</p>
+
+{# This is a render sample using freeformMacros #}
+<h2>Macros content render:</h2>
+{{ freeformMacros.freeformText('first', freeform) }}
+
+<code>Check freeform/templates/macros.twig to know about other available Macros</code>
+
+{# This is a content render sample using the native display provided by drupal: #}
+<h2>Native Drupal render:</h2>
+{{ freeform.first.contents }}

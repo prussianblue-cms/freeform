@@ -1,0 +1,192 @@
+{#
+/**
+ * @file
+ * Macros for the SRI theme.
+ *
+ */
+#}
+
+{# Renders true for existing entities, false for null entities #}
+{% macro freeformExists(code,freeform) %}
+  {% if freeform is null %}
+    <span class="freeform-alert">The freeform contents with the code <code>{{ code }}</code> were not loaded. Loading might be disabled in the block, or the content does not exist.</span>
+  {% else %}
+    {% set entity = freeform['contents'][code].entity %}
+    {% if entity is null %}
+      false
+    {% else %}
+      true
+    {% endif %}
+  {% endif %}
+{% endmacro %}
+
+{# Renders a plain text item from Freeform content #}
+{% macro freeformPlainText(code,freeform) %}
+  {% if freeform is null %}
+    The freeform contents with the code {{ code }} were not loaded. Loading might be disabled in the block, or the content does not exist.
+  {% else %}
+    {% set entity = freeform['contents'][code].entity %}
+    {% if entity is null %}
+      The {{ code }} text item is missing. Please add it to the Freeform node with the code {{ freeform.code }}
+    {% else %}
+      {{ entity.field_freeform_plain_text.getString() }}
+    {% endif %}
+  {% endif %}
+{% endmacro %}
+
+
+{# Renders a full item from Freeform content #}
+{% macro freeformEntityRender(code,freeform) %}
+  {% if freeform is null %}
+    <span class="freeform-alert">The freeform contents with the code <code>{{ code }}</code> were not loaded. Loading might be disabled in the block, or the content does not exist.</span>
+  {% else %}
+    {% set entity = freeform['contents'][code].entity %}
+    {% if entity is null %}
+      <span class="freeform-alert">The <code>{{ code }}</code> text item is missing. Please add it to the Freeform node with the code <code>{{ freeform.code }}</code></span>
+    {% else %}
+      {{ entity | view('full') }}
+    {% endif %}
+  {% endif %}
+{% endmacro %}
+
+
+{# Renders a text item from Freeform content #}
+{% macro freeformText(code,freeform) %}
+  {% import _self as freeformMacros %}
+  {{ freeformMacros.freeformEntityRender(code,freeform) }}
+{% endmacro %}
+
+
+{# Renders a simple image from Freeform content #}
+{% macro freeformImage(code,freeform) %}
+  {% if freeform is null %}
+    <span class="freeform-alert">The freeform contents with the code <code>{{ code }}</code> were not loaded. Loading might be disabled in the block, or the content does not exist.</span>
+  {% else %}
+    {% set entity = freeform['contents'][code].entity %}
+    {% if entity is null %}
+      <span class="freeform-alert">The <code>{{ code }}</code> image item is missing. Please add it to the Freeform node with the code <code>{{ freeform.code }}</code></span>
+    {% else %}
+      {% set url = file_url( entity.field_freeform_image.0.entity.field_media_image.0.entity.getFileUri() ) %}
+      {% set alt = entity.field_freeform_image_alt.getString() %}
+      {% set title = entity.field_freeform_image_title.getString() %}
+      <img src="{{ url }}" alt="{{ alt }}" title="{{ title }}">
+    {% endif %}
+  {% endif %}
+{% endmacro %}
+
+
+{# Renders an image path from Freeform content #}
+{% macro freeformImageUri(code,freeform) %}
+  {% if freeform is null %}
+    <span class="freeform-alert">The freeform contents with the code <code>{{ code }}</code> were not loaded. Loading might be disabled in the block, or the content does not exist.</span>
+  {% else %}
+    {% set entity = freeform['contents'][code].entity %}
+    {% if entity is null %}
+      <span class="freeform-alert">The <code>{{ code }}</code> image item is missing. Please add it to the Freeform node with the code <code>{{ freeform.code }}</code></span>
+    {% else %}
+      {% set url = file_url( entity.field_freeform_image.0.entity.field_media_image.0.entity.getFileUri() ) %}
+      {{ url }}
+    {% endif %}
+  {% endif %}
+{% endmacro %}
+
+
+{# Renders only the image title from Freeform content #}
+{% macro freeformImageTitle(code,freeform) %}
+  {% if freeform is null %}
+    <span class="freeform-alert">The freeform contents with the code <code>{{ code }}</code> were not loaded. Loading might be disabled in the block, or the content does not exist.</span>
+  {% else %}
+    {% set entity = freeform['contents'][code].entity %}
+    {% if entity is null %}
+      <span class="freeform-alert">The <code>{{ code }}</code> image item is missing. Please add it to the Freeform node with the code <code>{{ freeform.code }}</code></span>
+    {% else %}
+      {% set title = entity.field_freeform_image_title.getString() %}
+      {{ title }}
+    {% endif %}
+  {% endif %}
+{% endmacro %}
+
+
+{# Renders an image with a style from Freeform content #}
+{% macro freeformImageStyle(code,styleName,freeform) %}
+  {% if freeform is null %}
+    <span class="freeform-alert">The freeform contents with the code <code>{{ code }}</code> were not loaded. Loading might be disabled in the block, or the content does not exist.</span>
+  {% else %}
+    {% set entity = freeform['contents'][code].entity %}
+    {% if entity is null %}
+      <span class="freeform-alert">The <code>{{ code }}</code> image item is missing. Please add it to the Freeform node with the code <code>{{ freeform.code }}</code></span>
+    {% else %}
+      {% set url = file_url( entity.field_freeform_image.0.entity.field_media_image.0.entity.getFileUri()  | image_style(styleName) ) %}
+      {% set alt = entity.field_freeform_image_alt.getString() %}
+      {% set title = entity.field_freeform_image_title.getString() %}
+      <img src="{{ url }}" alt="{{ alt }}" title="{{ title }}">
+    {% endif %}
+  {% endif %}
+{% endmacro %}
+
+
+{# Renders an image path from Freeform content with a style applied #}
+{% macro freeformImageStyleUri(code,styleName,freeform) %}
+  {% if freeform is null %}
+    <span class="freeform-alert">The freeform contents with the code <code>{{ code }}</code> were not loaded. Loading might be disabled in the block, or the content does not exist.</span>
+  {% else %}
+    {% set entity = freeform['contents'][code].entity %}
+    {% if entity is null %}
+      <span class="freeform-alert">The <code>{{ code }}</code> image item is missing. Please add it to the Freeform node with the code <code>{{ freeform.code }}</code></span>
+    {% else %}
+      {% set url = file_url( entity.field_freeform_image.0.entity.field_media_image.0.entity.getFileUri()  | image_style(styleName) ) %}
+      {{ url }}
+    {% endif %}
+  {% endif %}
+{% endmacro %}
+
+
+{# Outputs an URI #}
+{%- macro freeformLinkURL(code,freeform) -%}
+  {%- if freeform is null -%}
+    ?error=The freeform contents with the code {{ code }} were not loaded. Loading might be disabled in the block, or the content does not exist
+  {%- else -%}
+    {%- set entity = freeform['contents'][code].entity -%}
+    {%- if entity is null -%}
+      ?error=The {{ code }} link item is missing. Please add it to the Freeform node with the code {{ freeform.code }}
+    {%- else -%}
+      {{ entity.field_freeform_url.0.url }}
+    {%- endif -%}
+  {%- endif -%}
+{%- endmacro -%}
+
+
+{# Outputs a raw text title #}
+{%- macro freeformLinkTitle(code,freeform) -%}
+  {%- if freeform is null -%}
+    The freeform contents with the code {{ code }} were not loaded. Loading might be disabled in the block, or the content does not exist
+  {%- else -%}
+    {%- set entity = freeform['contents'][code].entity -%}
+    {%- if entity is null -%}
+      The {{ code }} link item is missing. Please add it to the Freeform node with the code {{ freeform.code }}
+    {%- else -%}
+      {{ entity.field_freeform_url.title }}
+    {%- endif -%}
+  {%- endif -%}
+{%- endmacro -%}
+
+
+{# Renders an entity based on an id stored as plain text in Freeform content (Only works with plain text fields and numeric values) #}
+{% macro freeformRenderEntity(code,freeform,entity_type,display_mode) %}
+  {% if entity_type is null %}
+    {% set entity_type = 'node' %}
+  {% endif %}
+  {% if display_mode is null %}
+    {% set display_mode = 'full' %}
+  {% endif %}
+  {% if freeform is null %}
+    <span class="freeform-alert">The freeform contents with the code <code>{{ code }}</code> were not loaded. Loading might be disabled in the block, or the content does not exist.</span>
+  {% else %}
+    {% set entity_id = freeform['contents'][code].entity.get('field_freeform_plain_text').value %}
+    {% if entity_id is null %}
+      <span class="freeform-alert">The <code>{{ code }}</code> value item is missing. Please add it to the Freeform node with the code <code>{{ freeform.code }}</code></span>
+    {% else %}
+      {{ drupal_entity(entity_type, entity_id, display_mode) }}
+    {% endif %}
+  {% endif %}
+{% endmacro %}
